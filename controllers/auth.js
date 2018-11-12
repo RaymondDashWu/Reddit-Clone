@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
+const app = require('express').Router();
+const User = require('../models/user')
 
-module.exports = (app) => {
     // SIGN UP FORM
     app.get("/sign-up", (req, res) => {
         res.render("sign-up.handlebars");
@@ -37,7 +38,7 @@ module.exports = (app) => {
 
     // LOGIN FORM
     app.get('/login', (req, res) => {
-        res.render('login.handlebars');
+        res.render('login');
     });
     // LOGIN
     app.post("/login", (req, res) => {
@@ -81,4 +82,5 @@ module.exports = (app) => {
                 console.log(err);
             });
     });
-};
+
+module.exports = app;

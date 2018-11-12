@@ -9,6 +9,9 @@ const bodyParser = require('body-parser');
 const db = require('./data/reddit-db');
 const expressValidator = require('express-validator');
 const exphbs = require('express-handlebars');
+const auth = require('./controllers/auth');
+const comments = require('./controllers/comments-controller')
+const posts = require('./controllers/posts')
 
 
 
@@ -35,6 +38,9 @@ var checkAuth = (req, res, next) => {
   next();
 };
 app.use(checkAuth);
+app.use(auth);
+app.use(comments);
+app.use(posts)
 
 const post = require('./controllers/posts.js')(app);
 const comment = require('./controllers/comments-controller.js')(app);
