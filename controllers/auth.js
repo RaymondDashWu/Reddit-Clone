@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const app = require('express').Router();
 const User = require('../models/user')
 
+console.log("connected to auth controller")
     // SIGN UP FORM
     app.get("/sign-up", (req, res) => {
         res.render("sign-up.handlebars");
@@ -9,6 +10,7 @@ const User = require('../models/user')
     // SIGN UP POST
     app.post("/sign-up", (req, res) => {
         // Create User and JWT
+        console.log(req.body)
         const user = new User(req.body);
 
         user.save().then((user) => {
