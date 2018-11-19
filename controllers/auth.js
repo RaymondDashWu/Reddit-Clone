@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
-const app = require('express').Router();
-const User = require('../models/user')
+const app = require('express')();
+const User = require('../models/user');
 
 console.log("connected to auth controller")
     // SIGN UP FORM
@@ -12,12 +12,12 @@ console.log("connected to auth controller")
         // Create User and JWT
         console.log(req.body)
         const user = new User(req.body);
-
+        console.log(user)
         user.save().then((user) => {
                 var token = jwt.sign({
-                    _id: user._id
+                    data: user._id
                 }, process.env.SECRET, {
-                    expiresIn: "60 days"
+                    expiresIn: "1d"
                 });
                 res.cookie('nToken', token, {
                     maxAge: 900000,
@@ -40,7 +40,7 @@ console.log("connected to auth controller")
 
     // LOGIN FORM
     app.get('/login', (req, res) => {
-        res.render('login');
+        res.render('login.handlebars');
     });
     // LOGIN
     app.post("/login", (req, res) => {

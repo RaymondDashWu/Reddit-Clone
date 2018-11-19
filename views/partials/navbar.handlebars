@@ -14,9 +14,7 @@
     <form class="form-inline my-2 my-lg-0">
       {{#if currentUser}}
       <a href="/posts/new" class="btn btn-primary navbar-btn">New Post</a>
-      {{/if}}
       <span class="ml-5">Welcome {{ session.username }}!</span>
-      {{#if currentUser}}
       <a href="/logout" class="btn btn-danger navbar-btn ml-3">Logout</a>
       {{else}}
       <a href="/login" class="btn btn-outline-primary navbar-btn px-3">Login</a>

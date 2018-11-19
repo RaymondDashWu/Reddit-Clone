@@ -1,10 +1,11 @@
 const Post = require('../models/post');
-console.log('Connected to posts controller')
-module.exports = app => {
+console.log('Connected to posts controller');
+const app = require('express')();
+
   app.get('/n/:subreddit', function (req, res) {
     Post.find({
         subreddit: req.params.subreddit
-      })
+      }).populate('author')
       .then(posts => {
         res.render('posts-index.handlebars', {
           posts
@@ -20,7 +21,7 @@ module.exports = app => {
     res.render("posts-new.handlebars")
   });
 
-  // Was originally /posts. Changed to /posts/new
+  // Was originally /posts. Changed to /posts/new  
   app.post("/posts/new", (req, res) => {
     if (req.user) {
       var post = new Post(req.body);
@@ -71,4 +72,5 @@ module.exports = app => {
       console.log(err.message)
     })
   });
-};
+
+  module.exports = app

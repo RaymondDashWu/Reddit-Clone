@@ -1,10 +1,11 @@
 const Comment = require('../models/comment');
 const Post = require('../models/post')
-const app = require('express');
+const app = require('express')();
+
 
 console.log("Connected to comments controller")
 
-module.exports = app => {
+
   // CREATE Comment
     app.post("/posts/:postId/comments", (req, res) => {
         // INSTANTIATE INSTANCE OF MODEL
@@ -32,4 +33,4 @@ module.exports = app => {
             console.log(err);
           });
       });
-}
+      module.exports = app

@@ -1,6 +1,7 @@
+require('dotenv').config();
+
 var cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
-
 const express = require('express');
 const app = express();
 const Post = require('./models/post');
@@ -10,10 +11,8 @@ const db = require('./data/reddit-db');
 const expressValidator = require('express-validator');
 const exphbs = require('express-handlebars');
 const auth = require('./controllers/auth');
-const comments = require('./controllers/comments-controller')
-const posts = require('./controllers/posts')
-
-
+const comments = require('./controllers/comments-controller');
+const posts = require('./controllers/posts');
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
@@ -37,13 +36,12 @@ var checkAuth = (req, res, next) => {
 
   next();
 };
+
 app.use(checkAuth);
 app.use(auth);
 app.use(comments);
 app.use(posts)
 
-const post = require('./controllers/posts.js')(app);
-const comment = require('./controllers/comments-controller.js')(app);
 
 app.listen(process.env.PORT || 3000, () => {
   console.log('App listening on port 3000!')
