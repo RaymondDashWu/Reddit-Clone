@@ -11,25 +11,25 @@ const UserSchema = new Schema({
 }, { timestamps: true });
 
 // Must use function here! ES6 => functions do not bind this!
-UserSchema.pre("save", async function() {
-  // // SET createdAt AND updatedAt
-  // const now = new Date();
-  // this.updatedAt = now;
-  // if (!this.createdAt) {
-  //   this.createdAt = now;
-  // }
-    this.password = await bcrypt.hash(this.password, 10);
-  // // ENCRYPT PASSWORD
-  // const user = this;
-  // if (!user.isModified("password")) {
-  //   return next();
-  // }
-  // bcrypt.genSalt(10, (err, salt) => {
-  //   bcrypt.hash(user.password, salt, (err, hash) => {
-  //     user.password = hash;
-  //     next();
-  //   });
-  // });
+UserSchema.pre("save", function(next) {
+  // SET createdAt AND updatedAt
+  const now = new Date();
+  this.updatedAt = now;
+  if (!this.createdAt) {
+    this.createdAt = now;
+  }
+
+  // ENCRYPT PASSWORD
+  const user = this;
+  if (!user.isModified("password")) {
+    return next();
+  }
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(user.password, salt, (err, hash) => {
+      user.password = hash;
+      next();
+    });
+  });
 });
 
 // Need to use function to enable this.password to work.

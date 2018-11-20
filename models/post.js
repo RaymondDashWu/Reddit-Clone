@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+// const User = require('../models/user')
+
 const PostSchema = new Schema({
   createdAt: { type: Date },
   updatedAt: { type: Date },
@@ -12,7 +14,6 @@ const PostSchema = new Schema({
   author : { type: Schema.Types.ObjectId, ref: "User", required: true },
 });
 
-console.log("connected to post model")
 PostSchema.pre("save", function(next) {
   // SET createdAt AND updatedAt
   const now = new Date();
@@ -24,5 +25,7 @@ PostSchema.pre("save", function(next) {
 
   next();
 });
+
+console.log("connected to post model")
 
 module.exports = mongoose.model("Post", PostSchema);
