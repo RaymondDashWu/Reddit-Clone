@@ -1,6 +1,7 @@
 const Post = require('../models/post');
 console.log('Connected to posts controller');
 const app = require('express')();
+const User = require('../models/user')
 
 app.get('/n/:subreddit', function (req, res) {
   Post.find({
@@ -21,12 +22,18 @@ app.get('/posts/new', (req, res) => {
   res.render("posts-new.handlebars")
 });
 
-// Was originally /posts. Changed to /posts/new  
+// Was originally /posts. Changed to /posts/new
+// TOFIX: not injecting current users into routes
+// don't have current_user variable in this
 app.post("/posts/new", (req, res) => {
   if (req.user) {
+    console.log(req.body)
     var post = new Post(req.body);
     post.author = req.user._id;
-
+    console.log("LOOK HERE")
+    console.log(post.author)
+    console.log(req.user)
+    console.log(req.user._id)
     post
       .save()
       .then(post => {
@@ -46,6 +53,8 @@ app.post("/posts/new", (req, res) => {
 
 
 app.get("/", (req, res) => {
+  console.log("req.cookies:",req.cookies)
+
   var currentUser = req.user;
 
   Post.find({})
@@ -60,6 +69,7 @@ app.get("/", (req, res) => {
     });
 });
 
+// TODO: provide with current user
 app.get("/posts/:id", function (req, res) {
   // LOOK UP THE POST
   Post.findById(req.params.id).populate('comments').then((post) => {

@@ -6,6 +6,19 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 describe("Posts", () => {
+    before(done => {
+        agent
+            .post("/login")
+            .send({
+                username: "testone",
+                password: "password"
+            })
+            .end(function (err, res) {
+                done();
+            });
+    });
+
+    // TOFIX: Everything below needs to be updated to new code. Does not work atm.
     it("should create with valid attributes at POST /posts", done => {
         // test code
         // Import your Post model

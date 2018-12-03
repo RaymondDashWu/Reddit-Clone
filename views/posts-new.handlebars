@@ -1,6 +1,7 @@
 <div class="row">
   <div class="col-sm-4 col-sm-offset-4">
     <form action="/posts/new" method="post">
+    <input type="hidden" name="author" value="{{user}}">
       <legend>New Post</legend>
       <div class="form-group">
         <label for="post-title">Title</label>
