@@ -53,7 +53,7 @@ app.post("/posts/new", (req, res) => {
 
 
 app.get("/", (req, res) => {
-  console.log("req.cookies:",req.cookies)
+  console.log("req.cookies:", req.cookies)
 
   var currentUser = req.user;
 
@@ -72,7 +72,8 @@ app.get("/", (req, res) => {
 // TODO: provide with current user
 app.get("/posts/:id", function (req, res) {
   // LOOK UP THE POST
-  Post.findById(req.params.id).populate('comments').then((post) => {
+  var currentUser = req.user;
+  Post.findById(req.params.id).populate('author').then((post) => {
     res.render('posts-show.handlebars', {
       post
     })
@@ -80,5 +81,23 @@ app.get("/posts/:id", function (req, res) {
     console.log(err.message)
   })
 });
+
+app.get("/posts/:id", (req, res) => {
+  var currentUser = req.user;
+
+  Post.findById(req.params.id).populate('author')
+    .then(post => {
+      console.log(post)
+      res.render("posts-show.handlebars", {
+        postId: req.params.id,
+        'post': post,
+        'comments': post.comments,
+        'currentUser': currentUser
+      });
+
+    }).catch(err => {
+      console.log(err.message);
+    })
+})
 
 module.exports = app
