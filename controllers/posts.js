@@ -23,8 +23,6 @@ app.get('/posts/new', (req, res) => {
 });
 
 // Was originally /posts. Changed to /posts/new
-// TOFIX: not injecting current users into routes
-// don't have current_user variable in this
 app.post("/posts/new", (req, res) => {
   if (req.user) {
     console.log(req.body)
@@ -75,7 +73,8 @@ app.get("/", (req, res) => {
 app.get("/posts/:id", function (req, res) {
   // LOOK UP THE POST
   var currentUser = req.user;
-  Post.findById(req.params.id).populate('author').then((post) => {
+  Post.findById(req.params.id).populate('author').populate('comments').then((post) => {
+    console.log(post)
     res.render('posts-show.handlebars', {
       post
     })
