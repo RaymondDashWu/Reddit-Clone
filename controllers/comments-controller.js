@@ -1,10 +1,10 @@
 const Comment = require('../models/comment');
 const Post = require('../models/post')
 const app = require('express')();
+const User = require('../models/user')
 
 
 console.log("Connected to comments controller")
-
 
   // CREATE Comment
     app.post("/posts/:postId/comments", (req, res) => {

@@ -48,6 +48,8 @@ app.post("/posts/new", (req, res) => {
       .catch(err => {
         console.log(err.message);
       });
+  } else {
+    res.send('You need to be logged in!')
   }
 });
 
