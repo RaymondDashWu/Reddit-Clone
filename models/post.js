@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
+const Comment = require('../models/comment')
 // const User = require('../models/user')
 
 const PostSchema = new Schema({
@@ -10,6 +10,7 @@ const PostSchema = new Schema({
   url: { type: String, required: true },
   summary: { type: String, required: true },
   subreddit: { type: String, required: true },
+  // comments: [Comment.Schema],
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
   author : { type: Schema.Types.ObjectId, ref: "User", required: true },
 });

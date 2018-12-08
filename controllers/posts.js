@@ -25,13 +25,13 @@ app.get('/posts/new', (req, res) => {
 // Was originally /posts. Changed to /posts/new
 app.post("/posts/new", (req, res) => {
   if (req.user) {
-    console.log(req.body)
+    // console.log(req.body)
     var post = new Post(req.body);
     post.author = req.user._id;
-    console.log("LOOK HERE")
-    console.log(post.author)
-    console.log(req.user)
-    console.log(req.user._id)
+    // console.log("LOOK HERE")
+    // console.log(post.author)
+    // console.log(req.user)
+    // console.log(req.user._id)
     post
       .save()
       .then(post => {
@@ -70,27 +70,28 @@ app.get("/", (req, res) => {
 });
 
 // TODO: provide with current user
-app.get("/posts/:id", function (req, res) {
-  // LOOK UP THE POST
-  var currentUser = req.user;
-  Post.findById(req.params.id).populate('author').populate('comments').then((post) => {
-    console.log(post)
-    res.render('posts-show.handlebars', {
-      post
-    })
-  }).catch((err) => {
-    console.log(err.message)
-  })
-});
+// app.get("/posts/:id", function (req, res) {
+//   // LOOK UP THE POST
+//   var currentUser = req.user;
+//   Post.findById(req.params.id).populate('author').populate('comments').then((post) => {
+//     console.log(post)
+//     res.render('posts-show.handlebars', {
+//       post
+//     })
+//   }).catch((err) => {
+//     console.log(err.message)
+//   })
+// });
 
 app.get("/posts/:id", (req, res) => {
   var currentUser = req.user;
 
-  Post.findById(req.params.id).populate('author')
+  console.log('here stupid ----------------------------------')
+  console.log(req.params.id)
+  Post.findById(req.params.id).populate('author').populate('comments')
     .then(post => {
-      console.log(post)
       res.render("posts-show.handlebars", {
-        postId: req.params.id,
+        'postId': req.params.id,
         'post': post,
         'comments': post.comments,
         'currentUser': currentUser

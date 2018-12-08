@@ -13,6 +13,7 @@ const exphbs = require('express-handlebars');
 const auth = require('./controllers/auth');
 const comments = require('./controllers/comments-controller');
 const posts = require('./controllers/posts');
+const replies = require('./controllers/replies');
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
@@ -32,8 +33,8 @@ var checkAuth = (req, res, next) => {
     var token = req.cookies.nToken;
     var decodedToken = jwt.decode(token, { complete: true }) || {};
     req.user = decodedToken.payload;
-    console.log("decodedToken.header:",decodedToken.header);
-    console.log("decodedToken.payload:",decodedToken.payload);
+    // console.log("decodedToken.header:",decodedToken.header);
+    // console.log("decodedToken.payload:",decodedToken.payload);
   }
   next();
 };
@@ -41,8 +42,8 @@ var checkAuth = (req, res, next) => {
 app.use(checkAuth);
 app.use(auth);
 app.use(comments);
-app.use(posts)
-
+app.use(posts);
+app.use(replies);
 
 app.listen(process.env.PORT || 3000, () => {
   console.log('App listening on port 3000!')
