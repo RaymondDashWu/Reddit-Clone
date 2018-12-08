@@ -11,6 +11,7 @@
     </div>
     {{#each post.comments}}
     <p>{{this.content}}</p>
+    <a href="/comments/{{this._id}}/replies/new">Reply</a>
     {{/each}}
   </form>
 </div>
