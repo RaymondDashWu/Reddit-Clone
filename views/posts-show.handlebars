@@ -10,6 +10,7 @@
       <button type="submit">Save</button>
     </div>
     {{#each post.comments}}
+    {{> comment}}
     <p>{{this.content}}</p>
     <a href="/comments/{{this._id}}/replies/new">Reply</a>
     {{/each}}

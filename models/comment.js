@@ -9,4 +9,10 @@ const CommentSchema = new Schema({
   comments: [{type: Schema.Types.ObjectId, ref: "Comment"}]
 });
 
+// call populate and get reference to other comments
+CommentSchema.pre("find", function(next) {
+  this.populate("comments");
+  next();
+})
+
 module.exports = mongoose.model("Comment", CommentSchema);

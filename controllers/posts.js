@@ -3,6 +3,26 @@ console.log('Connected to posts controller');
 const app = require('express')();
 const User = require('../models/user')
 
+app.put("/posts/:id/vote-up", function(req, res) {
+  Post.findById(req.params.id).exec(function(err, post) {
+    post.upVotes.push(req.user._id);
+    post.voteScore = post.voteTotal + 1;
+    post.save();
+
+    res.status(200);
+  });
+});
+
+app.put("/posts/:id/vote-down", function(req, res) {
+  Post.findById(req.params.id).exec(function(err, post) {
+    post.downVotes.push(req.user._id);
+    post.voteScore = post.voteTotal - 1;
+    post.save();
+
+    res.status(200);
+  });
+});
+
 app.get('/n/:subreddit', function (req, res) {
   Post.find({
       subreddit: req.params.subreddit
@@ -86,8 +106,8 @@ app.get("/", (req, res) => {
 app.get("/posts/:id", (req, res) => {
   var currentUser = req.user;
 
-  console.log('here stupid ----------------------------------')
-  console.log(req.params.id)
+  // console.log('here stupid ----------------------------------')
+  // console.log(req.params.id)
   Post.findById(req.params.id).populate('author').populate('comments')
     .then(post => {
       res.render("posts-show.handlebars", {
