@@ -4,10 +4,29 @@ var User = require("../models/user");
 const app = require('express')();
 
 // NEW REPLY
-app.get("/comments/:commentId/replies/new", (req, res) => {
-    console.log("req.user:",req.user)
+// app.get("/comments/:commentId/replies/new", (req, res) => {
+//     console.log("req.user:",req.user)
+//     let post;
+//     Comment.findById(req.params.commentId)
+//         .then(comment => {
+//             res.render("replies-new", {
+//                 post,
+//                 comment,
+//                 user: req.user._id
+//             });
+//         })
+//         .catch(err => {
+//             console.log(err.message);
+//         });
+// });
+
+app.get("/posts/:postId/comments/:commentId/replies/new", (req, res) => {
     let post;
-    Comment.findById(req.params.commentId)
+    Post.findById(req.params.postId)
+        .then(p => {
+            post = p;
+            return Comment.findById(req.params.commentId);
+        })
         .then(comment => {
             res.render("replies-new", {
                 post,
@@ -41,11 +60,30 @@ app.post("/comments/:commentId/replies", (req, res) => {
     //     console.log(err.message);
     //   });
     // TODO: Not getting req.body.post_id
-    Comment.create(req.body)
-    .then(comment => {
+    // not unshifting and associating with user
+    // not unshifting on parent comment
+    console.log(req.body)
+    comment = new Comment (req.body)
+    comment.save()
+        .then(newComment => {
+            Comment.findById(req.params.commentId)
+                .then(parentComment => {
+                    parentComment.comments.unshift(newComment._id)
+                    parentComment.save().then(() => {
+                        res.redirect("/posts/" + req.body.post_id);
+                    }).catch((err) => {
+                        console.log(err)
+                    })
+                }).catch((err) => {
+                    console.error(err)
+                })
+
             // REDIRECT TO THE PARENT POST#SHOW ROUTE
-            res.redirect("/posts/" + req.body.post_id);
-          })
-  });
+            // res.redirect("/posts/" + req.body.post_id);
+        })
+        .catch(err => {
+            console.log(err.message);
+        });
+});
 
 module.exports = app;
